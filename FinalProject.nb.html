@@ -10,6 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Eric Schneider" />
 
 
 <title>R Notebook</title>
@@ -1745,14 +1746,85 @@ summary {
 
 
 <h1 class="title toc-ignore">R Notebook</h1>
+<h4 class="author">Eric Schneider</h4>
 
 </div>
 
 
 <!-- rnb-text-begin -->
+<div id="front-matter" class="section level2">
+<h2>Front Matter</h2>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjbGVhbiB1cCB3b3Jrc3BhY2UgZW52aXJvbm1lbnRcbnJtKGxpc3QgPSBscygpKVxuXG4jIGFsbCBwYWNrYWdlcyB1c2VkIGZvciB0aGUgYXNzaWdubWVudFxubGlicmFyeShkcGx5cilcbmxpYnJhcnkoRGF0YUNvbXB1dGluZylcbmxpYnJhcnkocnZlc3QpXG5cbmBgYCJ9 -->
+<pre class="r"><code># clean up workspace environment
+rm(list = ls())
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKCg==</div>
+# all packages used for the assignment
+library(dplyr)
+library(DataComputing)
+library(rvest)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="load-in-data" class="section level2">
+<h2>Load in Data</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFnZSA8LSBcImh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL0xpc3Rfb2ZfTmF0aW9uYWxfQmFza2V0YmFsbF9Bc3NvY2lhdGlvbl9jYXJlZXJfc2NvcmluZ19sZWFkZXJzXCJcbnRhYmxlTGlzdCA8LSBwYWdlICU+JVxuICByZWFkX2h0bWwoKSAlPiVcbiAgaHRtbF9ub2Rlcyhjc3MgPSBcInRhYmxlXCIpICU+JVxuICBodG1sX3RhYmxlKGZpbGwgPSBUUlVFKVxuYGBgIn0= -->
+<pre class="r"><code>page &lt;- &quot;https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_career_scoring_leaders&quot;
+tableList &lt;- page %&gt;%
+  read_html() %&gt;%
+  html_nodes(css = &quot;table&quot;) %&gt;%
+  html_table(fill = TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFnZSA8LSBcImh0dHBzOi8vd3d3LmJhc2tldGJhbGwtcmVmZXJlbmNlLmNvbS9sZWFndWVzL05CQV8yMDE5X3Blcl9nYW1lLmh0bWxcIlxudGFibGVMaXN0IDwtIHBhZ2UgJT4lXG4gIHJlYWRfaHRtbCgpICU+JVxuICBodG1sX25vZGVzKGNzcyA9IFwidGFibGVcIikgJT4lXG4gIGh0bWxfdGFibGUoZmlsbCA9IFRSVUUpXG5nMjAxODkgPC0gKHRhYmxlTGlzdFtbMV1dKVxuYGBgIn0= -->
+<pre class="r"><code>page &lt;- &quot;https://www.basketball-reference.com/leagues/NBA_2019_per_game.html&quot;
+tableList &lt;- page %&gt;%
+  read_html() %&gt;%
+  html_nodes(css = &quot;table&quot;) %&gt;%
+  html_table(fill = TRUE)
+g20189 &lt;- (tableList[[1]])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFnZSA8LSBcImh0dHBzOi8vd3d3LmJhc2tldGJhbGwtcmVmZXJlbmNlLmNvbS9sZWFndWVzL05CQV8yMDE4X3Blcl9nYW1lLmh0bWxcIlxudGFibGVMaXN0IDwtIHBhZ2UgJT4lXG4gIHJlYWRfaHRtbCgpICU+JVxuICBodG1sX25vZGVzKGNzcyA9IFwidGFibGVcIikgJT4lXG4gIGh0bWxfdGFibGUoZmlsbCA9IFRSVUUpXG5nMjAxNzggPC0gKHRhYmxlTGlzdFtbMV1dKVxuYGBgIn0= -->
+<pre class="r"><code>page &lt;- &quot;https://www.basketball-reference.com/leagues/NBA_2018_per_game.html&quot;
+tableList &lt;- page %&gt;%
+  read_html() %&gt;%
+  html_nodes(css = &quot;table&quot;) %&gt;%
+  html_table(fill = TRUE)
+g20178 &lt;- (tableList[[1]])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFnZSA8LSBcImh0dHBzOi8vd3d3LmJhc2tldGJhbGwtcmVmZXJlbmNlLmNvbS9sZWFndWVzL05CQV8yMDE3X3Blcl9nYW1lLmh0bWxcIlxudGFibGVMaXN0IDwtIHBhZ2UgJT4lXG4gIHJlYWRfaHRtbCgpICU+JVxuICBodG1sX25vZGVzKGNzcyA9IFwidGFibGVcIikgJT4lXG4gIGh0bWxfdGFibGUoZmlsbCA9IFRSVUUpXG5nMjAxNjcgPC0gKHRhYmxlTGlzdFtbMV1dKVxuYGBgIn0= -->
+<pre class="r"><code>page &lt;- &quot;https://www.basketball-reference.com/leagues/NBA_2017_per_game.html&quot;
+tableList &lt;- page %&gt;%
+  read_html() %&gt;%
+  html_nodes(css = &quot;table&quot;) %&gt;%
+  html_table(fill = TRUE)
+g20167 &lt;- (tableList[[1]])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="guiding-question-look-at-stats-by-position-over-the-3-years-and-compare-what-positions-are-best-at-what-stat-and-also-something-about-all-stars-or-chipplayoff-teams" class="section level1">
+<h1>Guiding question: Look at Stats by position over the 3 years and compare what positions are best at what stat and also something about all-stars or chip/playoff teams</h1>
+<!-- rnb-text-end -->
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKYXV0aG9yOiAiRXJpYyBTY2huZWlkZXIiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCiMjIEZyb250IE1hdHRlcgoKYGBge3J9CiMgY2xlYW4gdXAgd29ya3NwYWNlIGVudmlyb25tZW50CnJtKGxpc3QgPSBscygpKQoKIyBhbGwgcGFja2FnZXMgdXNlZCBmb3IgdGhlIGFzc2lnbm1lbnQKbGlicmFyeShkcGx5cikKbGlicmFyeShEYXRhQ29tcHV0aW5nKQpsaWJyYXJ5KHJ2ZXN0KQoKYGBgCgoKIyMgTG9hZCBpbiBEYXRhCmBgYHtyfQpwYWdlIDwtICJodHRwczovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9MaXN0X29mX05hdGlvbmFsX0Jhc2tldGJhbGxfQXNzb2NpYXRpb25fY2FyZWVyX3Njb3JpbmdfbGVhZGVycyIKdGFibGVMaXN0IDwtIHBhZ2UgJT4lCiAgcmVhZF9odG1sKCkgJT4lCiAgaHRtbF9ub2Rlcyhjc3MgPSAidGFibGUiKSAlPiUKICBodG1sX3RhYmxlKGZpbGwgPSBUUlVFKQpEYXRhIDwtICh0YWJsZUxpc3RbWzJdXSkKYGBgCgpgYGB7cn0KcGFnZSA8LSAiaHR0cHM6Ly93d3cuYmFza2V0YmFsbC1yZWZlcmVuY2UuY29tL2xlYWd1ZXMvTkJBXzIwMTlfcGVyX2dhbWUuaHRtbCIKdGFibGVMaXN0IDwtIHBhZ2UgJT4lCiAgcmVhZF9odG1sKCkgJT4lCiAgaHRtbF9ub2Rlcyhjc3MgPSAidGFibGUiKSAlPiUKICBodG1sX3RhYmxlKGZpbGwgPSBUUlVFKQpnMjAxODkgPC0gKHRhYmxlTGlzdFtbMV1dKQpgYGAKCmBgYHtyfQpwYWdlIDwtICJodHRwczovL3d3dy5iYXNrZXRiYWxsLXJlZmVyZW5jZS5jb20vbGVhZ3Vlcy9OQkFfMjAxOF9wZXJfZ2FtZS5odG1sIgp0YWJsZUxpc3QgPC0gcGFnZSAlPiUKICByZWFkX2h0bWwoKSAlPiUKICBodG1sX25vZGVzKGNzcyA9ICJ0YWJsZSIpICU+JQogIGh0bWxfdGFibGUoZmlsbCA9IFRSVUUpCmcyMDE3OCA8LSAodGFibGVMaXN0W1sxXV0pCmBgYAoKYGBge3J9CnBhZ2UgPC0gImh0dHBzOi8vd3d3LmJhc2tldGJhbGwtcmVmZXJlbmNlLmNvbS9sZWFndWVzL05CQV8yMDE3X3Blcl9nYW1lLmh0bWwiCnRhYmxlTGlzdCA8LSBwYWdlICU+JQogIHJlYWRfaHRtbCgpICU+JQogIGh0bWxfbm9kZXMoY3NzID0gInRhYmxlIikgJT4lCiAgaHRtbF90YWJsZShmaWxsID0gVFJVRSkKZzIwMTY3IDwtICh0YWJsZUxpc3RbWzFdXSkKYGBgCgojIEd1aWRpbmcgcXVlc3Rpb246IExvb2sgYXQgU3RhdHMgYnkgcG9zaXRpb24gb3ZlciB0aGUgMyB5ZWFycyBhbmQgY29tcGFyZSB3aGF0IHBvc2l0aW9ucyBhcmUgYmVzdCBhdCB3aGF0IHN0YXQgYW5kIGFsc28gc29tZXRoaW5nIGFib3V0IGFsbC1zdGFycyBvciBjaGlwL3BsYXlvZmYgdGVhbXM=</div>
 
 
 

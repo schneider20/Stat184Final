@@ -1,6 +1,58 @@
 ---
 title: "R Notebook"
+author: "Eric Schneider"
 output: html_notebook
 ---
 
+## Front Matter
 
+```{r}
+# clean up workspace environment
+rm(list = ls())
+
+# all packages used for the assignment
+library(dplyr)
+library(DataComputing)
+library(rvest)
+
+```
+
+
+## Load in Data
+```{r}
+page <- "https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_career_scoring_leaders"
+tableList <- page %>%
+  read_html() %>%
+  html_nodes(css = "table") %>%
+  html_table(fill = TRUE)
+Data <- (tableList[[2]])
+```
+
+```{r}
+page <- "https://www.basketball-reference.com/leagues/NBA_2019_per_game.html"
+tableList <- page %>%
+  read_html() %>%
+  html_nodes(css = "table") %>%
+  html_table(fill = TRUE)
+g20189 <- (tableList[[1]])
+```
+
+```{r}
+page <- "https://www.basketball-reference.com/leagues/NBA_2018_per_game.html"
+tableList <- page %>%
+  read_html() %>%
+  html_nodes(css = "table") %>%
+  html_table(fill = TRUE)
+g20178 <- (tableList[[1]])
+```
+
+```{r}
+page <- "https://www.basketball-reference.com/leagues/NBA_2017_per_game.html"
+tableList <- page %>%
+  read_html() %>%
+  html_nodes(css = "table") %>%
+  html_table(fill = TRUE)
+g20167 <- (tableList[[1]])
+```
+
+# Guiding question: Look at Stats by position over the 3 years and compare what positions are best at what stat and also something about all-stars or chip/playoff teams
