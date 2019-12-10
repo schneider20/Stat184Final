@@ -14,7 +14,7 @@ rm(list = ls())
 library(dplyr)
 library(DataComputing)
 library(rvest)
-
+library(tidyr)
 ```
 
 
@@ -55,4 +55,24 @@ tableList <- page %>%
 g20167 <- (tableList[[1]])
 ```
 
-# Guiding question: Look at Stats by position over the 3 years and compare what positions are best at what stat and also something about all-stars or chip/playoff teams
+# Inspect new imported data tables
+```{r}
+head(g20167)
+head(Data)
+```
+# Guiding question: Look at Stats by position over the 3 years and compare what positions are best at what stat and and compare recent years stats to all time stats
+
+# Add year variable to tables to be able to determine stats by year when joined
+```{r}
+g20189 <- mutate(g20189, year = '2018-9')
+g20178 <- mutate(g20178, year = '2017-8')
+g20167 <- mutate(g20167, year = '2016-7')
+```
+
+# Join the 3 yearly tables 
+```{r}
+allYears <- full_join(g20167,g20178)
+allYears <- full_join(allYears,g20189)
+```
+
+# Seperate allYears table by position
