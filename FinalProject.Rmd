@@ -15,6 +15,8 @@ library(dplyr)
 library(DataComputing)
 library(rvest)
 library(tidyr)
+library(ggplot2)
+library(mosaic)
 ```
 
 
@@ -76,3 +78,42 @@ allYears <- full_join(allYears,g20189)
 ```
 
 # Seperate allYears table by position
+
+# Gets average of 5 big stats by Position
+```{r}
+SG <- filter(allYears, Pos == 'SG')
+PF <- filter(allYears, Pos == 'PF')
+C <- filter(allYears, Pos == 'C')
+SF <- filter(allYears, Pos == 'SF')
+PG <- filter(allYears, Pos == 'PG')
+```
+
+```{r}
+points <- allYears %>%
+group_by(Pos) %>%
+summarise(PPG = mean(as.numeric(PTS)))
+
+assists <- allYears %>%
+group_by(Pos) %>%
+summarise(APG = mean(as.numeric(AST)))
+
+steals <- allYears %>%
+group_by(Pos) %>%
+summarise(SPG = mean(as.numeric(STL)))
+
+blocks <- allYears %>%
+group_by(Pos) %>%
+summarise(BPG = mean(as.numeric(BLK)))
+
+turnover <- allYears %>%
+group_by(Pos) %>%
+summarise(TOVPG = mean(as.numeric(TOV)))
+```
+
+```{r}
+all_stats <- full_join(points,assists)
+all_stats <- full_join(all_stats,steals)
+all_stats <- full_join(all_stats,blocks)
+all_stats <- full_join(all_stats,turnover)
+all_stats <- filter(all_stats, Pos != 'Pos')
+```
