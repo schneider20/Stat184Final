@@ -89,25 +89,37 @@ PG <- filter(allYears, Pos == 'PG')
 ```
 
 ```{r}
+target <- c("C", "PG", "SG", "PF", "SF")
+
 points <- allYears %>%
+filter(Pos %in% target) %>%
 group_by(Pos) %>%
-summarise(PPG = mean(as.numeric(PTS)))
+summarise(PPG = mean(as.numeric(PTS))) 
+
 
 assists <- allYears %>%
+filter(Pos %in% target) %>%
 group_by(Pos) %>%
-summarise(APG = mean(as.numeric(AST)))
+summarise(APG = mean(as.numeric(AST))) 
+
 
 steals <- allYears %>%
+filter(Pos %in% target) %>%
 group_by(Pos) %>%
-summarise(SPG = mean(as.numeric(STL)))
+summarise(SPG = mean(as.numeric(STL))) 
+
 
 blocks <- allYears %>%
+filter(Pos %in% target) %>%
 group_by(Pos) %>%
-summarise(BPG = mean(as.numeric(BLK)))
+summarise(BPG = mean(as.numeric(BLK))) 
+
 
 turnover <- allYears %>%
+filter(Pos %in% target) %>%
 group_by(Pos) %>%
-summarise(TOVPG = mean(as.numeric(TOV)))
+summarise(TOVPG = mean(as.numeric(TOV))) 
+
 ```
 
 ```{r}
@@ -116,4 +128,17 @@ all_stats <- full_join(all_stats,steals)
 all_stats <- full_join(all_stats,blocks)
 all_stats <- full_join(all_stats,turnover)
 all_stats <- filter(all_stats, Pos != 'Pos')
+```
+
+# Presentation Graph
+```{r}
+points_graph <- ggplot(data=all_stats,aes(x=Pos,y=PPG ))+geom_bar(stat='identity',position='stack', width=.9) 
+assist_graph <- ggplot(data=all_stats,aes(x=Pos,y=APG ))+geom_bar(stat='identity',position='stack', width=.9) 
+block_graph <- ggplot(data=all_stats,aes(x=Pos,y=BPG ))+geom_bar(stat='identity',position='stack', width=.9) 
+turn_graph <- ggplot(data=all_stats,aes(x=Pos,y=TOVPG ))+geom_bar(stat='identity',position='stack', width=.9) 
+steal_graph <- ggplot(data=all_stats,aes(x=Pos,y=SPG ))+geom_bar(stat='identity',position='stack', width=.9) 
+
+final <- plot_grid(points_graph, assist_graph, steal_graph, turn_graph, block_graph)
+
+ggsave('statfinaltest.pdf',final)
 ```
