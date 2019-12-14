@@ -17,52 +17,63 @@ library(rvest)
 library(tidyr)
 library(ggplot2)
 library(mosaic)
+library(cowplot)
+library(magrittr)
 ```
 
 
 ## Load in Data
 ```{r}
-page <- "https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_career_scoring_leaders"
+page <- "https://www.landofbasketball.com/all_time_leaders/points_total_career_season.htm"
 tableList <- page %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
-Data <- (tableList[[2]])
+allTime <- (tableList[[1]])
 ```
 
 ```{r}
-page <- "https://www.basketball-reference.com/leagues/NBA_2019_per_game.html"
-tableList <- page %>%
+page1 <- "https://www.basketball-reference.com/leagues/NBA_2019_per_game.html"
+tableList1 <- page1 %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
-g20189 <- (tableList[[1]])
+g20189 <- (tableList1[[1]])
 ```
 
 ```{r}
-page <- "https://www.basketball-reference.com/leagues/NBA_2018_per_game.html"
-tableList <- page %>%
+page2 <- "https://www.basketball-reference.com/leagues/NBA_2018_per_game.html"
+tableList2 <- page2 %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
-g20178 <- (tableList[[1]])
+g20178 <- (tableList2[[1]])
 ```
 
 ```{r}
-page <- "https://www.basketball-reference.com/leagues/NBA_2017_per_game.html"
-tableList <- page %>%
+page3 <- "https://www.basketball-reference.com/leagues/NBA_2017_per_game.html"
+tableList3 <- page3 %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
-g20167 <- (tableList[[1]])
+g20167 <- (tableList3[[1]])
 ```
 
 # Inspect new imported data tables
 ```{r}
 head(g20167)
-head(Data)
+head(allTime)
 ```
 # Guiding question: Look at Stats by position over the 3 years and compare what positions are best at what stat and and compare recent years stats to all time stats
+
+
+# Wrangle allTime data table
+
+```{r}
+allTime <- select(allTime, X2, X3, X6)
+allTime <- allTime[-1,]
+allTime <- allTime[-1,]
+```
 
 # Add year variable to tables to be able to determine stats by year when joined
 ```{r}
@@ -79,15 +90,15 @@ allYears <- full_join(allYears,g20189)
 
 # Seperate allYears table by position
 
-# Gets average of 5 big stats by Position
 ```{r}
-SG <- filter(allYears, Pos == 'SG')
-PF <- filter(allYears, Pos == 'PF')
-C <- filter(allYears, Pos == 'C')
-SF <- filter(allYears, Pos == 'SF')
-PG <- filter(allYears, Pos == 'PG')
+SG <- filter(allYears, grepl(pattern = "SG", Pos))
+PF <- filter(allYears, grepl(pattern = "PF", Pos))
+C <- filter(allYears, grepl(pattern = "C", Pos))
+SF <- filter(allYears, grepl(pattern = "SF", Pos))
+PG <- filter(allYears, grepl(pattern = "PG", Pos))
 ```
 
+# Gets average of 6 big stats by Position
 ```{r}
 target <- c("C", "PG", "SG", "PF", "SF")
 
@@ -120,13 +131,21 @@ filter(Pos %in% target) %>%
 group_by(Pos) %>%
 summarise(TOVPG = mean(as.numeric(TOV))) 
 
+rebounds <- allYears %>%
+filter(Pos %in% target) %>%
+group_by(Pos) %>%
+summarise(RPG = mean(as.numeric(TRB))) 
+
 ```
+
+# Joins individual stat tables into one containing the stats 
 
 ```{r}
 all_stats <- full_join(points,assists)
 all_stats <- full_join(all_stats,steals)
 all_stats <- full_join(all_stats,blocks)
 all_stats <- full_join(all_stats,turnover)
+all_stats <- full_join(all_stats,rebounds)
 all_stats <- filter(all_stats, Pos != 'Pos')
 ```
 
@@ -137,8 +156,12 @@ assist_graph <- ggplot(data=all_stats,aes(x=Pos,y=APG ))+geom_bar(stat='identity
 block_graph <- ggplot(data=all_stats,aes(x=Pos,y=BPG ))+geom_bar(stat='identity',position='stack', width=.9) 
 turn_graph <- ggplot(data=all_stats,aes(x=Pos,y=TOVPG ))+geom_bar(stat='identity',position='stack', width=.9) 
 steal_graph <- ggplot(data=all_stats,aes(x=Pos,y=SPG ))+geom_bar(stat='identity',position='stack', width=.9) 
+rebound_graph <- ggplot(data=all_stats,aes(x=Pos,y=RPG ))+geom_bar(stat='identity',position='stack', width=.9) 
 
-final <- plot_grid(points_graph, assist_graph, steal_graph, turn_graph, block_graph)
+final <- plot_grid(points_graph, assist_graph, steal_graph, turn_graph, block_graph, rebound_graph)
+```
 
-ggsave('statfinaltest.pdf',final)
+
+```{r}
+test <- select(allYears, Player, PTS, year)
 ```
