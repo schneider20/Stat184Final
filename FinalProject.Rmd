@@ -63,8 +63,11 @@ g20167 <- (tableList3[[1]])
 ```{r}
 head(g20167)
 head(allTime)
+names(allTime)
+glimpse(g20189)
 ```
-# Guiding question: Look at Stats by position over the 3 years and compare what positions are best at what stat and and compare recent years stats to all time stats
+
+# Guiding question: Look at Stats by position over the 3 years and compare what positions are best in what areas. Also compare one all time stat 
 
 
 # Add year variable to tables to be able to determine stats by year when joined
@@ -128,7 +131,6 @@ rebounds <- allYears %>%
 filter(Pos %in% target) %>%
 group_by(Pos) %>%
 summarise(RPG = mean(as.numeric(TRB))) 
-
 ```
 
 # Joins individual stat tables into one containing the stats 
@@ -151,18 +153,21 @@ turn_graph <- ggplot(data=all_stats,aes(x=Pos,y=TOVPG ))+geom_bar(stat='identity
 steal_graph <- ggplot(data=all_stats,aes(x=Pos,y=SPG ))+geom_bar(stat='identity',position='stack', width=.9) 
 rebound_graph <- ggplot(data=all_stats,aes(x=Pos,y=RPG ))+geom_bar(stat='identity',position='stack', width=.9) 
 
-final <- plot_grid(points_graph, assist_graph, steal_graph, turn_graph, block_graph, rebound_graph)
+final_stats <- plot_grid(points_graph, assist_graph, steal_graph, turn_graph, block_graph, rebound_graph)
+final_stats
 ```
 
 
 ```{r}
-test <- select(allYears, Player, PTS, year)
+target <- c("C", "PG", "SG", "PF", "SF")
+test <- select(allYears, Player, PTS, year, Pos) %>%
+  filter(Pos %in% target)
 ```
 
 
 ppg by position (count graph)
 ```{r}
-ggplot() + geom_freqpoly(allYears, aes(x = PTS), binwidth = 0.45) + aes(colour = Pos) + facet_wrap(~Pos, ncol = 4) + labs(title = "") + theme(legend.position = "right") + geom_freqpoly(allTime, aes(x = PTS), binwidth = 0.61)
+ggplot(test, aes(x = PTS)) + geom_freqpoly(binwidth = 0.6) + aes(colour = Pos) + labs(title = "") + theme(legend.position = "right") 
 ```
 
 
