@@ -24,12 +24,12 @@ library(magrittr)
 
 ## Load in Data
 ```{r}
-page <- "https://www.landofbasketball.com/all_time_leaders/points_total_career_season.htm"
+page <- "https://www.basketball-reference.com/leaders/pts_per_g_career.html"
 tableList <- page %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
-allTime <- (tableList[[1]])
+allTime <- (tableList[[3]])
 ```
 
 ```{r}
@@ -67,14 +67,6 @@ head(allTime)
 # Guiding question: Look at Stats by position over the 3 years and compare what positions are best at what stat and and compare recent years stats to all time stats
 
 
-# Wrangle allTime data table
-
-```{r}
-allTime <- select(allTime, X2, X3, X6)
-allTime <- allTime[-1,]
-allTime <- allTime[-1,]
-```
-
 # Add year variable to tables to be able to determine stats by year when joined
 ```{r}
 g20189 <- mutate(g20189, year = '2018-9')
@@ -86,6 +78,7 @@ g20167 <- mutate(g20167, year = '2016-7')
 ```{r}
 allYears <- full_join(g20167,g20178)
 allYears <- full_join(allYears,g20189)
+allYears[, c(30)] <- sapply(allYears[, c(30)], as.numeric)
 ```
 
 # Seperate allYears table by position
@@ -164,4 +157,20 @@ final <- plot_grid(points_graph, assist_graph, steal_graph, turn_graph, block_gr
 
 ```{r}
 test <- select(allYears, Player, PTS, year)
+```
+
+
+ppg by position (count graph)
+```{r}
+ggplot() + geom_freqpoly(allYears, aes(x = PTS), binwidth = 0.45) + aes(colour = Pos) + facet_wrap(~Pos, ncol = 4) + labs(title = "") + theme(legend.position = "right") + geom_freqpoly(allTime, aes(x = PTS), binwidth = 0.61)
+```
+
+
+# Comapres PPG on current vs all time
+```{r}
+g <- ggplot() +
+geom_bar(data = allTime, aes(x = PPG), fill = 'red', alpha = 0.5, binwidth = 0.6) +
+geom_bar(data = allYears, aes(x = PTS), fill = 'blue', alpha = 0.5, binwidth = 0.6) +
+xlim(15,50)
+suppressWarnings(print(g))
 ```
