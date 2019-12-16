@@ -18,7 +18,6 @@ library(tidyr)
 library(ggplot2)
 library(mosaic)
 library(cowplot)
-library(magrittr)
 ```
 
 
@@ -67,7 +66,7 @@ names(allTime)
 glimpse(g20189)
 ```
 
-# Guiding question: Look at Stats by position over the 3 years and compare what positions are best in what areas. Also compare one all time stat 
+# Guiding question: Make comparisons between stats and position, find if some stats have relationships to others, and compare current stats to all time ones to identify a shift in the game
 
 
 # Add year variable to tables to be able to determine stats by year when joined
@@ -82,6 +81,11 @@ g20167 <- mutate(g20167, year = '2016-7')
 allYears <- full_join(g20167,g20178)
 allYears <- full_join(allYears,g20189)
 allYears[, c(30)] <- sapply(allYears[, c(30)], as.numeric)
+allYears[, c(24)] <- sapply(allYears[, c(24)], as.numeric)
+allYears[, c(25)] <- sapply(allYears[, c(25)], as.numeric)
+allYears[, c(26)] <- sapply(allYears[, c(26)], as.numeric)
+allYears[, c(27)] <- sapply(allYears[, c(27)], as.numeric)
+allYears[, c(28)] <- sapply(allYears[, c(28)], as.numeric)
 ```
 
 # Seperate allYears table by position
@@ -178,4 +182,11 @@ geom_bar(data = allTime, aes(x = PPG), fill = 'red', alpha = 0.5, binwidth = 0.6
 geom_bar(data = allYears, aes(x = PTS), fill = 'blue', alpha = 0.5, binwidth = 0.6) +
 xlim(15,50)
 suppressWarnings(print(g))
+```
+
+# TOV vs Steals graph 
+```{r}
+comp <- na.omit(allYears)
+comp <- filter(comp, Pos %in% target)
+ggplot(data=comp,aes(x=TOV,y=STL))+geom_point()+facet_wrap(~Pos,ncol=4) + stat_smooth(method=loess) 
 ```
