@@ -162,20 +162,21 @@ final_stats
 ```
 
 
+# Creates a data table that shows points per game by position
 ```{r}
 target <- c("C", "PG", "SG", "PF", "SF")
-test <- select(allYears, Player, PTS, year, Pos) %>%
+ppg_pos <- select(allYears, Player, PTS, year, Pos) %>%
   filter(Pos %in% target)
 ```
 
 
-ppg by position (count graph)
+# Graphs points per game by position as a frequency graph 
 ```{r}
-ggplot(test, aes(x = PTS)) + geom_freqpoly(binwidth = 0.6) + aes(colour = Pos) + labs(title = "") + theme(legend.position = "right") 
+ggplot(ppg_pos, aes(x = PTS)) + geom_freqpoly(binwidth = 0.6) + aes(colour = Pos) + labs(title = "") + theme(legend.position = "right") 
 ```
 
 
-# Comapres PPG on current vs all time
+# Comapres points per game of current players versus the top 50 players all time
 ```{r}
 g <- ggplot() +
 geom_bar(data = allTime, aes(x = PPG), fill = 'red', alpha = 0.5, binwidth = 0.6) +
@@ -184,7 +185,7 @@ xlim(15,50)
 suppressWarnings(print(g))
 ```
 
-# TOV vs Steals graph 
+# Graphs turn overs per game vs steals per game by position
 ```{r}
 comp <- na.omit(allYears)
 comp <- filter(comp, Pos %in% target)
