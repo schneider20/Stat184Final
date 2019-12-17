@@ -215,3 +215,12 @@ ggplot(data=comp,aes(x=TOV,y=STL))+geom_point()+facet_wrap(~Pos,ncol=4) + stat_s
 
 ## Conclusions:
 
+1) Since the vector with the names of players averaging a higer PPG than one of the top 250 all time has a lot of names in it we know that that list will start to have lots of new names on it over the next era of the NBA. This also shows that the current NBA era is more offensive since so many players are scoring at that high of a level.
+
+2) Based on the graph showing average stats by position we can conclude that PPG does not vary much, point guards get by far more assists than any other position as well as the most turn overs. Centers also get by far the most rebounds and blocks per game. The guards also get the most steals out of any position.
+
+3) Based on the frequency graph we know that the power fowards have the most players consistently scoring double digits and that the few highest scoring players are all shooting or point guards. It also can be determined that center is the lowest scoring position on average but not by much.
+
+4) The over layed bar graph shows all time ppg vs current players ppg. The blue is the current players so we can see that there are many more current players scoring at the higher level (more than 20 PPG) but that there are more all time players who have scored between 10-20 points per game. This could be used to infer that the current higher scoring players will end up on the all time list since they will score at a high level foe a while then level out to more average but still reach the lit becasue of the scoring they did in their prime. 
+
+5) The dot plot compares turn overs and steals by posiiton. From this we can see that players who make multiple turn overs a game usually make up for it by getting more steals as well. But since the fit line curved down at the end of each plot we know that it too many turn overs are made players aren't able to make up for all of them anymore.
