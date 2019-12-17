@@ -4,7 +4,7 @@ author: "Eric Schneider"
 output: html_notebook
 ---
 
-## Front Matter
+## Set up rmd and import needed package libraries for analysis
 ```{r}
 # clean up workspace environment
 rm(list = ls())
@@ -20,7 +20,7 @@ library(cowplot)
 ```
 
 
-## Load in Data
+## Load in Data from websites to make data tables for research
 ```{r}
 page <- "https://www.basketball-reference.com/leaders/pts_per_g_career.html"
 tableList <- page %>%
@@ -58,7 +58,7 @@ g20167 <- (tableList3[[1]])
 ```
 
 
-# Inspect new imported data tables
+# Inspect new imported data tables to see format and variable names
 ```{r}
 head(g20167)
 head(allTime)
@@ -66,17 +66,17 @@ names(allTime)
 glimpse(g20189)
 ```
 
-# Guiding question: Make comparisons between stats and position, find if some stats have relationships to others, and compare current stats to all time ones to identify a shift in the game
+## Guiding question: Make comparisons between stats and position, find if some stats have relationships to others, and compare current stats to all time ones to identify a shift in the game.
 
 
-# Add year variable to tables to be able to determine stats by year when joined
+# Add year variable to tables to be able to determine stats by year when joined together
 ```{r}
 g20189 <- mutate(g20189, year = '2018-9')
 g20178 <- mutate(g20178, year = '2017-8')
 g20167 <- mutate(g20167, year = '2016-7')
 ```
 
-# Join the 3 yearly tables 
+# Join the 3 yearly tables to make a table with all stats from all 3 years
 ```{r}
 allYears <- full_join(g20167,g20178)
 allYears <- full_join(allYears,g20189)
@@ -89,7 +89,7 @@ allYears[, c(28)] <- sapply(allYears[, c(28)], as.numeric)
 ```
 
 
-# Seperate allYears table by position
+# Seperate allYears table by position to be able to compare stats by position
 ```{r}
 SG <- filter(allYears, grepl(pattern = "SG", Pos))
 PF <- filter(allYears, grepl(pattern = "PF", Pos))
@@ -99,7 +99,7 @@ PG <- filter(allYears, grepl(pattern = "PG", Pos))
 ```
 
 
-# Gets average of 6 big stats by Position
+# Gets average of 6 big stats by Position by takeing average of each stat from each position table
 ```{r}
 target <- c("C", "PG", "SG", "PF", "SF")
 
@@ -139,7 +139,7 @@ summarise(RPG = mean(as.numeric(TRB)))
 ```
 
 
-# Joins individual stat tables into one containing the stats 
+# Joins individual stat tables into one containing the stats to be able to graph comparison of stats
 ```{r}
 all_stats <- full_join(points,assists)
 all_stats <- full_join(all_stats,steals)
@@ -170,7 +170,7 @@ point_avg
 ```
 
 
-# Graph of each stat by position on average
+# Graph of each stat by position on average and put all graph together to be able to compare each stat
 ```{r}
 points_graph <- ggplot(data=all_stats,aes(x=Pos,y=PPG ))+geom_bar(stat='identity',position='stack', width=.9) 
 assist_graph <- ggplot(data=all_stats,aes(x=Pos,y=APG ))+geom_bar(stat='identity',position='stack', width=.9) 
@@ -184,7 +184,7 @@ final_stats
 ```
 
 
-# Creates a data table that shows points per game by position
+# Creates a data table that shows points per game by position for use in graph
 ```{r}
 target <- c("C", "PG", "SG", "PF", "SF")
 ppg_pos <- select(allYears, Player, PTS, year, Pos) %>%
@@ -192,13 +192,13 @@ ppg_pos <- select(allYears, Player, PTS, year, Pos) %>%
 ```
 
 
-# Graphs points per game by position as a frequency graph 
+# Graphs points per game by position as a frequency graph to see if there are variances by position
 ```{r}
 ggplot(ppg_pos, aes(x = PTS)) + geom_freqpoly(binwidth = 0.6) + aes(colour = Pos) + labs(title = "") + theme(legend.position = "right") 
 ```
 
 
-# Comapres points per game of current players versus the top 250 players all time
+# Graph data that comapres points per game of current players versus the top 250 players all time
 ```{r}
 g <- ggplot() +
 geom_bar(data = allTime, aes(x = PPG), fill = 'red', alpha = 0.5, binwidth = 0.6) +
@@ -207,7 +207,8 @@ xlim(15,50)
 suppressWarnings(print(g))
 ```
 
-# Graphs turn overs per game vs steals per game by position
+
+# Graphs turn overs per game vs steals per game by position to see if there is a correlation
 ```{r}
 comp <- na.omit(allYears)
 comp <- filter(comp, Pos %in% target)
