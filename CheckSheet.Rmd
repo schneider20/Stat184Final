@@ -46,7 +46,7 @@ Line 104, 110, 116, 122, 128, 133
 
 
 (G) .Rmd Line number(s) for use of loops and/or control flow: 
-
+Lines 153-169
 
 (H) .Rmd Line number(s) for use of machine learning (not "wrangling" but scored here): 
 

@@ -148,6 +148,27 @@ all_stats <- full_join(all_stats,rebounds)
 all_stats <- filter(all_stats, Pos != 'Pos')
 ```
 
+# Create vectors to hold names and point of players who are averageing more than one of the top 250 all time players
+
+```{r}
+pts_name <- allYears %>%
+ select(PTS, Player, year)
+pts_name <- pts_name %>%
+    filter(year == '2018-9')
+pts_name <- na.omit(pts_name)
+players <- c()
+point_avg <- c()
+for (i in 1:nrow(pts_name)) {
+if(pts_name[i,1] > 15) {
+players <- append(players,pts_name[i,2])
+point_avg <- append(point_avg,pts_name[i,1])
+}
+}
+players
+point_avg
+```
+
+
 # Presentation Graph
 ```{r}
 points_graph <- ggplot(data=all_stats,aes(x=Pos,y=PPG ))+geom_bar(stat='identity',position='stack', width=.9) 
@@ -176,7 +197,7 @@ ggplot(ppg_pos, aes(x = PTS)) + geom_freqpoly(binwidth = 0.6) + aes(colour = Pos
 ```
 
 
-# Comapres points per game of current players versus the top 50 players all time
+# Comapres points per game of current players versus the top 250 players all time
 ```{r}
 g <- ggplot() +
 geom_bar(data = allTime, aes(x = PPG), fill = 'red', alpha = 0.5, binwidth = 0.6) +
@@ -191,3 +212,6 @@ comp <- na.omit(allYears)
 comp <- filter(comp, Pos %in% target)
 ggplot(data=comp,aes(x=TOV,y=STL))+geom_point()+facet_wrap(~Pos,ncol=4) + stat_smooth(method=loess) 
 ```
+
+## Conclusions:
+
