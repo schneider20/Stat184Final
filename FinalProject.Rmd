@@ -5,7 +5,6 @@ output: html_notebook
 ---
 
 ## Front Matter
-
 ```{r}
 # clean up workspace environment
 rm(list = ls())
@@ -58,6 +57,7 @@ tableList3 <- page3 %>%
 g20167 <- (tableList3[[1]])
 ```
 
+
 # Inspect new imported data tables
 ```{r}
 head(g20167)
@@ -88,8 +88,8 @@ allYears[, c(27)] <- sapply(allYears[, c(27)], as.numeric)
 allYears[, c(28)] <- sapply(allYears[, c(28)], as.numeric)
 ```
 
-# Seperate allYears table by position
 
+# Seperate allYears table by position
 ```{r}
 SG <- filter(allYears, grepl(pattern = "SG", Pos))
 PF <- filter(allYears, grepl(pattern = "PF", Pos))
@@ -97,6 +97,7 @@ C <- filter(allYears, grepl(pattern = "C", Pos))
 SF <- filter(allYears, grepl(pattern = "SF", Pos))
 PG <- filter(allYears, grepl(pattern = "PG", Pos))
 ```
+
 
 # Gets average of 6 big stats by Position
 ```{r}
@@ -137,8 +138,8 @@ group_by(Pos) %>%
 summarise(RPG = mean(as.numeric(TRB))) 
 ```
 
-# Joins individual stat tables into one containing the stats 
 
+# Joins individual stat tables into one containing the stats 
 ```{r}
 all_stats <- full_join(points,assists)
 all_stats <- full_join(all_stats,steals)
@@ -148,8 +149,8 @@ all_stats <- full_join(all_stats,rebounds)
 all_stats <- filter(all_stats, Pos != 'Pos')
 ```
 
-# Create vectors to hold names and point of players who are averageing more than one of the top 250 all time players
 
+# Create vectors to hold names and point of players who are averageing more than one of the top 250 all time players
 ```{r}
 pts_name <- allYears %>%
  select(PTS, Player, year)
@@ -169,7 +170,7 @@ point_avg
 ```
 
 
-# Presentation Graph
+# Graph of each stat by position on average
 ```{r}
 points_graph <- ggplot(data=all_stats,aes(x=Pos,y=PPG ))+geom_bar(stat='identity',position='stack', width=.9) 
 assist_graph <- ggplot(data=all_stats,aes(x=Pos,y=APG ))+geom_bar(stat='identity',position='stack', width=.9) 
